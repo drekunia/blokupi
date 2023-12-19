@@ -10,9 +10,9 @@ defmodule Blokupi.Repo.Migrations.CreateUsersAuthTables do
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       add :uri, :string, null: false, unique: true
-      add :is_otp_enabled, :boolean
+      add :is_otp_enabled, :boolean, default: false, null: false
       add :otp_secret, :string
-      add :is_active, :boolean
+      add :is_active, :boolean, default: false, null: false
       add :tier, :string
       timestamps(type: :utc_datetime)
     end

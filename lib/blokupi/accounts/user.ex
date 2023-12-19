@@ -6,9 +6,9 @@ defmodule Blokupi.Accounts.User do
     field :username, :string
     field :uri, :string
     field :email, :string
-    field :is_otp_enabled, :boolean
+    field :is_otp_enabled, :boolean, default: false
     field :otp_secret, :string
-    field :is_active, :boolean
+    field :is_active, :boolean, default: false
     field :tier, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
