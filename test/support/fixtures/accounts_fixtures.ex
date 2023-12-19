@@ -32,4 +32,22 @@ defmodule Blokupi.AccountsFixtures do
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
     token
   end
+
+  @doc """
+  Generate a user_profile.
+  """
+  def user_profile_fixture(attrs \\ %{}) do
+    {:ok, user_profile} =
+      attrs
+      |> Enum.into(%{
+        amount_buttons: "some amount_buttons",
+        avatar: "some avatar",
+        bio: "some bio",
+        display_name: "some display_name",
+        urls: "some urls"
+      })
+      |> Blokupi.Accounts.create_user_profile()
+
+    user_profile
+  end
 end

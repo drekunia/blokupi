@@ -505,4 +505,66 @@ defmodule Blokupi.AccountsTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "user_profiles" do
+    alias Blokupi.Accounts.UserProfile
+
+    import Blokupi.AccountsFixtures
+
+    @invalid_attrs %{display_name: nil, avatar: nil, bio: nil, urls: nil, amount_buttons: nil}
+
+    test "list_user_profiles/0 returns all user_profiles" do
+      user_profile = user_profile_fixture()
+      assert Accounts.list_user_profiles() == [user_profile]
+    end
+
+    test "get_user_profile!/1 returns the user_profile with given id" do
+      user_profile = user_profile_fixture()
+      assert Accounts.get_user_profile!(user_profile.id) == user_profile
+    end
+
+    test "create_user_profile/1 with valid data creates a user_profile" do
+      valid_attrs = %{display_name: "some display_name", avatar: "some avatar", bio: "some bio", urls: "some urls", amount_buttons: "some amount_buttons"}
+
+      assert {:ok, %UserProfile{} = user_profile} = Accounts.create_user_profile(valid_attrs)
+      assert user_profile.display_name == "some display_name"
+      assert user_profile.avatar == "some avatar"
+      assert user_profile.bio == "some bio"
+      assert user_profile.urls == "some urls"
+      assert user_profile.amount_buttons == "some amount_buttons"
+    end
+
+    test "create_user_profile/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_user_profile(@invalid_attrs)
+    end
+
+    test "update_user_profile/2 with valid data updates the user_profile" do
+      user_profile = user_profile_fixture()
+      update_attrs = %{display_name: "some updated display_name", avatar: "some updated avatar", bio: "some updated bio", urls: "some updated urls", amount_buttons: "some updated amount_buttons"}
+
+      assert {:ok, %UserProfile{} = user_profile} = Accounts.update_user_profile(user_profile, update_attrs)
+      assert user_profile.display_name == "some updated display_name"
+      assert user_profile.avatar == "some updated avatar"
+      assert user_profile.bio == "some updated bio"
+      assert user_profile.urls == "some updated urls"
+      assert user_profile.amount_buttons == "some updated amount_buttons"
+    end
+
+    test "update_user_profile/2 with invalid data returns error changeset" do
+      user_profile = user_profile_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_profile(user_profile, @invalid_attrs)
+      assert user_profile == Accounts.get_user_profile!(user_profile.id)
+    end
+
+    test "delete_user_profile/1 deletes the user_profile" do
+      user_profile = user_profile_fixture()
+      assert {:ok, %UserProfile{}} = Accounts.delete_user_profile(user_profile)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user_profile!(user_profile.id) end
+    end
+
+    test "change_user_profile/1 returns a user_profile changeset" do
+      user_profile = user_profile_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_user_profile(user_profile)
+    end
+  end
 end

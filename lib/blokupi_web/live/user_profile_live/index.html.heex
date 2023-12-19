@@ -1,0 +1,45 @@
+<.header>
+  Listing User profiles
+  <:actions>
+    <.link patch={~p"/user_profiles/new"}>
+      <.button>New User profile</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="user_profiles"
+  rows={@streams.user_profiles}
+  row_click={fn {_id, user_profile} -> JS.navigate(~p"/user_profiles/#{user_profile}") end}
+>
+  <:col :let={{_id, user_profile}} label="Display name"><%= user_profile.display_name %></:col>
+  <:col :let={{_id, user_profile}} label="Avatar"><%= user_profile.avatar %></:col>
+  <:col :let={{_id, user_profile}} label="Bio"><%= user_profile.bio %></:col>
+  <:col :let={{_id, user_profile}} label="Urls"><%= user_profile.urls %></:col>
+  <:col :let={{_id, user_profile}} label="Amount buttons"><%= user_profile.amount_buttons %></:col>
+  <:action :let={{_id, user_profile}}>
+    <div class="sr-only">
+      <.link navigate={~p"/user_profiles/#{user_profile}"}>Show</.link>
+    </div>
+    <.link patch={~p"/user_profiles/#{user_profile}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, user_profile}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: user_profile.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="user_profile-modal" show on_cancel={JS.patch(~p"/user_profiles")}>
+  <.live_component
+    module={BlokupiWeb.UserProfileLive.FormComponent}
+    id={@user_profile.id || :new}
+    title={@page_title}
+    action={@live_action}
+    user_profile={@user_profile}
+    patch={~p"/user_profiles"}
+  />
+</.modal>
