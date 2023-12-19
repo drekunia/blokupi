@@ -1,0 +1,30 @@
+<.header>
+  User payment method <%= @user_payment_method.id %>
+  <:subtitle>This is a user_payment_method record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/user_payment_methods/#{@user_payment_method}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit user_payment_method</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Bank name"><%= @user_payment_method.bank_name %></:item>
+  <:item title="Is active"><%= @user_payment_method.is_active %></:item>
+  <:item title="Type"><%= @user_payment_method.type %></:item>
+  <:item title="Account number"><%= @user_payment_method.account_number %></:item>
+  <:item title="Account name"><%= @user_payment_method.account_name %></:item>
+</.list>
+
+<.back navigate={~p"/user_payment_methods"}>Back to user_payment_methods</.back>
+
+<.modal :if={@live_action == :edit} id="user_payment_method-modal" show on_cancel={JS.patch(~p"/user_payment_methods/#{@user_payment_method}")}>
+  <.live_component
+    module={BlokupiWeb.UserPaymentMethodLive.FormComponent}
+    id={@user_payment_method.id}
+    title={@page_title}
+    action={@live_action}
+    user_payment_method={@user_payment_method}
+    patch={~p"/user_payment_methods/#{@user_payment_method}"}
+  />
+</.modal>

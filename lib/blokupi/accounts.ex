@@ -446,4 +446,100 @@ defmodule Blokupi.Accounts do
   def change_user_profile(%UserProfile{} = user_profile, attrs \\ %{}) do
     UserProfile.changeset(user_profile, attrs)
   end
+
+  alias Blokupi.Accounts.UserPaymentMethod
+
+  @doc """
+  Returns the list of user_payment_methods.
+
+  ## Examples
+
+      iex> list_user_payment_methods()
+      [%UserPaymentMethod{}, ...]
+
+  """
+  def list_user_payment_methods do
+    Repo.all(UserPaymentMethod)
+  end
+
+  @doc """
+  Gets a single user_payment_method.
+
+  Raises `Ecto.NoResultsError` if the User payment method does not exist.
+
+  ## Examples
+
+      iex> get_user_payment_method!(123)
+      %UserPaymentMethod{}
+
+      iex> get_user_payment_method!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_payment_method!(id), do: Repo.get!(UserPaymentMethod, id)
+
+  @doc """
+  Creates a user_payment_method.
+
+  ## Examples
+
+      iex> create_user_payment_method(%{field: value})
+      {:ok, %UserPaymentMethod{}}
+
+      iex> create_user_payment_method(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_user_payment_method(attrs \\ %{}) do
+    %UserPaymentMethod{}
+    |> UserPaymentMethod.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a user_payment_method.
+
+  ## Examples
+
+      iex> update_user_payment_method(user_payment_method, %{field: new_value})
+      {:ok, %UserPaymentMethod{}}
+
+      iex> update_user_payment_method(user_payment_method, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_payment_method(%UserPaymentMethod{} = user_payment_method, attrs) do
+    user_payment_method
+    |> UserPaymentMethod.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a user_payment_method.
+
+  ## Examples
+
+      iex> delete_user_payment_method(user_payment_method)
+      {:ok, %UserPaymentMethod{}}
+
+      iex> delete_user_payment_method(user_payment_method)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_user_payment_method(%UserPaymentMethod{} = user_payment_method) do
+    Repo.delete(user_payment_method)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user_payment_method changes.
+
+  ## Examples
+
+      iex> change_user_payment_method(user_payment_method)
+      %Ecto.Changeset{data: %UserPaymentMethod{}}
+
+  """
+  def change_user_payment_method(%UserPaymentMethod{} = user_payment_method, attrs \\ %{}) do
+    UserPaymentMethod.changeset(user_payment_method, attrs)
+  end
 end

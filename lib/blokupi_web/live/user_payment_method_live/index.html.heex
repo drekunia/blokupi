@@ -1,0 +1,45 @@
+<.header>
+  Listing User payment methods
+  <:actions>
+    <.link patch={~p"/user_payment_methods/new"}>
+      <.button>New User payment method</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="user_payment_methods"
+  rows={@streams.user_payment_methods}
+  row_click={fn {_id, user_payment_method} -> JS.navigate(~p"/user_payment_methods/#{user_payment_method}") end}
+>
+  <:col :let={{_id, user_payment_method}} label="Bank name"><%= user_payment_method.bank_name %></:col>
+  <:col :let={{_id, user_payment_method}} label="Is active"><%= user_payment_method.is_active %></:col>
+  <:col :let={{_id, user_payment_method}} label="Type"><%= user_payment_method.type %></:col>
+  <:col :let={{_id, user_payment_method}} label="Account number"><%= user_payment_method.account_number %></:col>
+  <:col :let={{_id, user_payment_method}} label="Account name"><%= user_payment_method.account_name %></:col>
+  <:action :let={{_id, user_payment_method}}>
+    <div class="sr-only">
+      <.link navigate={~p"/user_payment_methods/#{user_payment_method}"}>Show</.link>
+    </div>
+    <.link patch={~p"/user_payment_methods/#{user_payment_method}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, user_payment_method}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: user_payment_method.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="user_payment_method-modal" show on_cancel={JS.patch(~p"/user_payment_methods")}>
+  <.live_component
+    module={BlokupiWeb.UserPaymentMethodLive.FormComponent}
+    id={@user_payment_method.id || :new}
+    title={@page_title}
+    action={@live_action}
+    user_payment_method={@user_payment_method}
+    patch={~p"/user_payment_methods"}
+  />
+</.modal>

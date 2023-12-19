@@ -567,4 +567,66 @@ defmodule Blokupi.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user_profile(user_profile)
     end
   end
+
+  describe "user_payment_methods" do
+    alias Blokupi.Accounts.UserPaymentMethod
+
+    import Blokupi.AccountsFixtures
+
+    @invalid_attrs %{type: nil, bank_name: nil, is_active: nil, account_number: nil, account_name: nil}
+
+    test "list_user_payment_methods/0 returns all user_payment_methods" do
+      user_payment_method = user_payment_method_fixture()
+      assert Accounts.list_user_payment_methods() == [user_payment_method]
+    end
+
+    test "get_user_payment_method!/1 returns the user_payment_method with given id" do
+      user_payment_method = user_payment_method_fixture()
+      assert Accounts.get_user_payment_method!(user_payment_method.id) == user_payment_method
+    end
+
+    test "create_user_payment_method/1 with valid data creates a user_payment_method" do
+      valid_attrs = %{type: "some type", bank_name: "some bank_name", is_active: true, account_number: "some account_number", account_name: "some account_name"}
+
+      assert {:ok, %UserPaymentMethod{} = user_payment_method} = Accounts.create_user_payment_method(valid_attrs)
+      assert user_payment_method.type == "some type"
+      assert user_payment_method.bank_name == "some bank_name"
+      assert user_payment_method.is_active == true
+      assert user_payment_method.account_number == "some account_number"
+      assert user_payment_method.account_name == "some account_name"
+    end
+
+    test "create_user_payment_method/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_user_payment_method(@invalid_attrs)
+    end
+
+    test "update_user_payment_method/2 with valid data updates the user_payment_method" do
+      user_payment_method = user_payment_method_fixture()
+      update_attrs = %{type: "some updated type", bank_name: "some updated bank_name", is_active: false, account_number: "some updated account_number", account_name: "some updated account_name"}
+
+      assert {:ok, %UserPaymentMethod{} = user_payment_method} = Accounts.update_user_payment_method(user_payment_method, update_attrs)
+      assert user_payment_method.type == "some updated type"
+      assert user_payment_method.bank_name == "some updated bank_name"
+      assert user_payment_method.is_active == false
+      assert user_payment_method.account_number == "some updated account_number"
+      assert user_payment_method.account_name == "some updated account_name"
+    end
+
+    test "update_user_payment_method/2 with invalid data returns error changeset" do
+      user_payment_method = user_payment_method_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_payment_method(user_payment_method, @invalid_attrs)
+      assert user_payment_method == Accounts.get_user_payment_method!(user_payment_method.id)
+    end
+
+    test "delete_user_payment_method/1 deletes the user_payment_method" do
+      user_payment_method = user_payment_method_fixture()
+      assert {:ok, %UserPaymentMethod{}} = Accounts.delete_user_payment_method(user_payment_method)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user_payment_method!(user_payment_method.id) end
+    end
+
+    test "change_user_payment_method/1 returns a user_payment_method changeset" do
+      user_payment_method = user_payment_method_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_user_payment_method(user_payment_method)
+    end
+  end
 end

@@ -50,4 +50,22 @@ defmodule Blokupi.AccountsFixtures do
 
     user_profile
   end
+
+  @doc """
+  Generate a user_payment_method.
+  """
+  def user_payment_method_fixture(attrs \\ %{}) do
+    {:ok, user_payment_method} =
+      attrs
+      |> Enum.into(%{
+        account_name: "some account_name",
+        account_number: "some account_number",
+        bank_name: "some bank_name",
+        is_active: true,
+        type: "some type"
+      })
+      |> Blokupi.Accounts.create_user_payment_method()
+
+    user_payment_method
+  end
 end
