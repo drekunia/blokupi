@@ -1,0 +1,30 @@
+<.header>
+  User balance <%= @user_balance.id %>
+  <:subtitle>This is a user_balance record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/user_balances/#{@user_balance}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit user_balance</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Total balance"><%= @user_balance.total_balance %></:item>
+  <:item title="Withdrawable balance"><%= @user_balance.withdrawable_balance %></:item>
+  <:item title="Accrued balance"><%= @user_balance.accrued_balance %></:item>
+  <:item title="Currency"><%= @user_balance.currency %></:item>
+  <:item title="Is user active"><%= @user_balance.is_user_active %></:item>
+</.list>
+
+<.back navigate={~p"/user_balances"}>Back to user_balances</.back>
+
+<.modal :if={@live_action == :edit} id="user_balance-modal" show on_cancel={JS.patch(~p"/user_balances/#{@user_balance}")}>
+  <.live_component
+    module={BlokupiWeb.UserBalanceLive.FormComponent}
+    id={@user_balance.id}
+    title={@page_title}
+    action={@live_action}
+    user_balance={@user_balance}
+    patch={~p"/user_balances/#{@user_balance}"}
+  />
+</.modal>

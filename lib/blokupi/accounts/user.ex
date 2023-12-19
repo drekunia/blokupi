@@ -1,4 +1,5 @@
 defmodule Blokupi.Accounts.User do
+  alias Blokupi.Monetary.UserBalance
   alias Blokupi.Features.UserWebhook
   alias Blokupi.Features.UserStreamKey
   alias Blokupi.Accounts.UserProfile
@@ -22,6 +23,7 @@ defmodule Blokupi.Accounts.User do
     has_one(:user_profile, UserProfile)
     has_many(:user_stream_key, UserStreamKey)
     has_many(:user_webhook, UserWebhook)
+    has_many(:user_balance, UserBalance)
   end
 
   @doc """
