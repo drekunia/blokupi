@@ -1,4 +1,5 @@
 defmodule Blokupi.Monetary.Transaction do
+  alias Blokupi.Accounts.User
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -16,6 +17,9 @@ defmodule Blokupi.Monetary.Transaction do
     field :response_details, :string
 
     timestamps(type: :utc_datetime)
+
+    belongs_to(:sender, User, foreign_key: :sender_user_id, define_field: false)
+    belongs_to(:recipient, User, foreign_key: :recipient_user_id, define_field: false)
   end
 
   @doc false

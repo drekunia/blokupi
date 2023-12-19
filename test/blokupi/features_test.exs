@@ -122,4 +122,72 @@ defmodule Blokupi.FeaturesTest do
       assert %Ecto.Changeset{} = Features.change_user_webhook(user_webhook)
     end
   end
+
+  describe "alert_templates" do
+    alias Blokupi.Features.AlertTemplate
+
+    import Blokupi.FeaturesFixtures
+
+    @invalid_attrs %{is_active: nil, is_content_active: nil, is_speech_active: nil, alert_threshold: nil, content_threshold: nil, speech_threshold: nil, alert_sound: nil, filtered_words: nil}
+
+    test "list_alert_templates/0 returns all alert_templates" do
+      alert_template = alert_template_fixture()
+      assert Features.list_alert_templates() == [alert_template]
+    end
+
+    test "get_alert_template!/1 returns the alert_template with given id" do
+      alert_template = alert_template_fixture()
+      assert Features.get_alert_template!(alert_template.id) == alert_template
+    end
+
+    test "create_alert_template/1 with valid data creates a alert_template" do
+      valid_attrs = %{is_active: true, is_content_active: true, is_speech_active: true, alert_threshold: 42, content_threshold: 42, speech_threshold: 42, alert_sound: "some alert_sound", filtered_words: "some filtered_words"}
+
+      assert {:ok, %AlertTemplate{} = alert_template} = Features.create_alert_template(valid_attrs)
+      assert alert_template.is_active == true
+      assert alert_template.is_content_active == true
+      assert alert_template.is_speech_active == true
+      assert alert_template.alert_threshold == 42
+      assert alert_template.content_threshold == 42
+      assert alert_template.speech_threshold == 42
+      assert alert_template.alert_sound == "some alert_sound"
+      assert alert_template.filtered_words == "some filtered_words"
+    end
+
+    test "create_alert_template/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Features.create_alert_template(@invalid_attrs)
+    end
+
+    test "update_alert_template/2 with valid data updates the alert_template" do
+      alert_template = alert_template_fixture()
+      update_attrs = %{is_active: false, is_content_active: false, is_speech_active: false, alert_threshold: 43, content_threshold: 43, speech_threshold: 43, alert_sound: "some updated alert_sound", filtered_words: "some updated filtered_words"}
+
+      assert {:ok, %AlertTemplate{} = alert_template} = Features.update_alert_template(alert_template, update_attrs)
+      assert alert_template.is_active == false
+      assert alert_template.is_content_active == false
+      assert alert_template.is_speech_active == false
+      assert alert_template.alert_threshold == 43
+      assert alert_template.content_threshold == 43
+      assert alert_template.speech_threshold == 43
+      assert alert_template.alert_sound == "some updated alert_sound"
+      assert alert_template.filtered_words == "some updated filtered_words"
+    end
+
+    test "update_alert_template/2 with invalid data returns error changeset" do
+      alert_template = alert_template_fixture()
+      assert {:error, %Ecto.Changeset{}} = Features.update_alert_template(alert_template, @invalid_attrs)
+      assert alert_template == Features.get_alert_template!(alert_template.id)
+    end
+
+    test "delete_alert_template/1 deletes the alert_template" do
+      alert_template = alert_template_fixture()
+      assert {:ok, %AlertTemplate{}} = Features.delete_alert_template(alert_template)
+      assert_raise Ecto.NoResultsError, fn -> Features.get_alert_template!(alert_template.id) end
+    end
+
+    test "change_alert_template/1 returns a alert_template changeset" do
+      alert_template = alert_template_fixture()
+      assert %Ecto.Changeset{} = Features.change_alert_template(alert_template)
+    end
+  end
 end

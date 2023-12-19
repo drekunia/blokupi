@@ -1,4 +1,6 @@
 defmodule Blokupi.Accounts.User do
+  alias Blokupi.Monetary.Transaction
+  alias Blokupi.Features.AlertTemplate
   alias Blokupi.Monetary.UserBalance
   alias Blokupi.Features.UserWebhook
   alias Blokupi.Features.UserStreamKey
@@ -24,6 +26,9 @@ defmodule Blokupi.Accounts.User do
     has_many(:user_stream_key, UserStreamKey)
     has_many(:user_webhook, UserWebhook)
     has_many(:user_balance, UserBalance)
+    has_many(:alert_template, AlertTemplate)
+    has_many(:sent_transaction, Transaction, foreign_key: :sender_user_id)
+    has_many(:received_transaction, Transaction, foreign_key: :recipient_user_id)
   end
 
   @doc """

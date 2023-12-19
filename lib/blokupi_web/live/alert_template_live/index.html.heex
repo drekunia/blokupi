@@ -1,0 +1,48 @@
+<.header>
+  Listing Alert templates
+  <:actions>
+    <.link patch={~p"/alert_templates/new"}>
+      <.button>New Alert template</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="alert_templates"
+  rows={@streams.alert_templates}
+  row_click={fn {_id, alert_template} -> JS.navigate(~p"/alert_templates/#{alert_template}") end}
+>
+  <:col :let={{_id, alert_template}} label="Is active"><%= alert_template.is_active %></:col>
+  <:col :let={{_id, alert_template}} label="Is content active"><%= alert_template.is_content_active %></:col>
+  <:col :let={{_id, alert_template}} label="Is speech active"><%= alert_template.is_speech_active %></:col>
+  <:col :let={{_id, alert_template}} label="Alert threshold"><%= alert_template.alert_threshold %></:col>
+  <:col :let={{_id, alert_template}} label="Content threshold"><%= alert_template.content_threshold %></:col>
+  <:col :let={{_id, alert_template}} label="Speech threshold"><%= alert_template.speech_threshold %></:col>
+  <:col :let={{_id, alert_template}} label="Alert sound"><%= alert_template.alert_sound %></:col>
+  <:col :let={{_id, alert_template}} label="Filtered words"><%= alert_template.filtered_words %></:col>
+  <:action :let={{_id, alert_template}}>
+    <div class="sr-only">
+      <.link navigate={~p"/alert_templates/#{alert_template}"}>Show</.link>
+    </div>
+    <.link patch={~p"/alert_templates/#{alert_template}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, alert_template}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: alert_template.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="alert_template-modal" show on_cancel={JS.patch(~p"/alert_templates")}>
+  <.live_component
+    module={BlokupiWeb.AlertTemplateLive.FormComponent}
+    id={@alert_template.id || :new}
+    title={@page_title}
+    action={@live_action}
+    alert_template={@alert_template}
+    patch={~p"/alert_templates"}
+  />
+</.modal>

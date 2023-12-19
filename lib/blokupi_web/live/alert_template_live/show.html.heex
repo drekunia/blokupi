@@ -1,0 +1,33 @@
+<.header>
+  Alert template <%= @alert_template.id %>
+  <:subtitle>This is a alert_template record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/alert_templates/#{@alert_template}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit alert_template</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Is active"><%= @alert_template.is_active %></:item>
+  <:item title="Is content active"><%= @alert_template.is_content_active %></:item>
+  <:item title="Is speech active"><%= @alert_template.is_speech_active %></:item>
+  <:item title="Alert threshold"><%= @alert_template.alert_threshold %></:item>
+  <:item title="Content threshold"><%= @alert_template.content_threshold %></:item>
+  <:item title="Speech threshold"><%= @alert_template.speech_threshold %></:item>
+  <:item title="Alert sound"><%= @alert_template.alert_sound %></:item>
+  <:item title="Filtered words"><%= @alert_template.filtered_words %></:item>
+</.list>
+
+<.back navigate={~p"/alert_templates"}>Back to alert_templates</.back>
+
+<.modal :if={@live_action == :edit} id="alert_template-modal" show on_cancel={JS.patch(~p"/alert_templates/#{@alert_template}")}>
+  <.live_component
+    module={BlokupiWeb.AlertTemplateLive.FormComponent}
+    id={@alert_template.id}
+    title={@page_title}
+    action={@live_action}
+    alert_template={@alert_template}
+    patch={~p"/alert_templates/#{@alert_template}"}
+  />
+</.modal>

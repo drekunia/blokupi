@@ -37,4 +37,25 @@ defmodule Blokupi.FeaturesFixtures do
 
     user_webhook
   end
+
+  @doc """
+  Generate a alert_template.
+  """
+  def alert_template_fixture(attrs \\ %{}) do
+    {:ok, alert_template} =
+      attrs
+      |> Enum.into(%{
+        alert_sound: "some alert_sound",
+        alert_threshold: 42,
+        content_threshold: 42,
+        filtered_words: "some filtered_words",
+        is_active: true,
+        is_content_active: true,
+        is_speech_active: true,
+        speech_threshold: 42
+      })
+      |> Blokupi.Features.create_alert_template()
+
+    alert_template
+  end
 end

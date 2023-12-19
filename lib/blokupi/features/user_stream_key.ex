@@ -1,4 +1,5 @@
 defmodule Blokupi.Features.UserStreamKey do
+  alias Blokupi.Features.AlertTemplate
   alias Blokupi.Accounts.User
   use Ecto.Schema
   import Ecto.Changeset
@@ -12,6 +13,7 @@ defmodule Blokupi.Features.UserStreamKey do
     timestamps(type: :utc_datetime)
 
     belongs_to(:user, User, define_field: false)
+    has_many(:alert_template, AlertTemplate)
   end
 
   @doc false

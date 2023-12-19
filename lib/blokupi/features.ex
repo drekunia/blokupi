@@ -197,4 +197,100 @@ defmodule Blokupi.Features do
   def change_user_webhook(%UserWebhook{} = user_webhook, attrs \\ %{}) do
     UserWebhook.changeset(user_webhook, attrs)
   end
+
+  alias Blokupi.Features.AlertTemplate
+
+  @doc """
+  Returns the list of alert_templates.
+
+  ## Examples
+
+      iex> list_alert_templates()
+      [%AlertTemplate{}, ...]
+
+  """
+  def list_alert_templates do
+    Repo.all(AlertTemplate)
+  end
+
+  @doc """
+  Gets a single alert_template.
+
+  Raises `Ecto.NoResultsError` if the Alert template does not exist.
+
+  ## Examples
+
+      iex> get_alert_template!(123)
+      %AlertTemplate{}
+
+      iex> get_alert_template!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_alert_template!(id), do: Repo.get!(AlertTemplate, id)
+
+  @doc """
+  Creates a alert_template.
+
+  ## Examples
+
+      iex> create_alert_template(%{field: value})
+      {:ok, %AlertTemplate{}}
+
+      iex> create_alert_template(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_alert_template(attrs \\ %{}) do
+    %AlertTemplate{}
+    |> AlertTemplate.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a alert_template.
+
+  ## Examples
+
+      iex> update_alert_template(alert_template, %{field: new_value})
+      {:ok, %AlertTemplate{}}
+
+      iex> update_alert_template(alert_template, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_alert_template(%AlertTemplate{} = alert_template, attrs) do
+    alert_template
+    |> AlertTemplate.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a alert_template.
+
+  ## Examples
+
+      iex> delete_alert_template(alert_template)
+      {:ok, %AlertTemplate{}}
+
+      iex> delete_alert_template(alert_template)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_alert_template(%AlertTemplate{} = alert_template) do
+    Repo.delete(alert_template)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking alert_template changes.
+
+  ## Examples
+
+      iex> change_alert_template(alert_template)
+      %Ecto.Changeset{data: %AlertTemplate{}}
+
+  """
+  def change_alert_template(%AlertTemplate{} = alert_template, attrs \\ %{}) do
+    AlertTemplate.changeset(alert_template, attrs)
+  end
 end
