@@ -1,0 +1,45 @@
+<.header>
+  Listing User webhooks
+  <:actions>
+    <.link patch={~p"/user_webhooks/new"}>
+      <.button>New User webhook</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="user_webhooks"
+  rows={@streams.user_webhooks}
+  row_click={fn {_id, user_webhook} -> JS.navigate(~p"/user_webhooks/#{user_webhook}") end}
+>
+  <:col :let={{_id, user_webhook}} label="Platform"><%= user_webhook.platform %></:col>
+  <:col :let={{_id, user_webhook}} label="Is active"><%= user_webhook.is_active %></:col>
+  <:col :let={{_id, user_webhook}} label="Url"><%= user_webhook.url %></:col>
+  <:col :let={{_id, user_webhook}} label="Message"><%= user_webhook.message %></:col>
+  <:col :let={{_id, user_webhook}} label="Fail count"><%= user_webhook.fail_count %></:col>
+  <:action :let={{_id, user_webhook}}>
+    <div class="sr-only">
+      <.link navigate={~p"/user_webhooks/#{user_webhook}"}>Show</.link>
+    </div>
+    <.link patch={~p"/user_webhooks/#{user_webhook}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, user_webhook}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: user_webhook.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="user_webhook-modal" show on_cancel={JS.patch(~p"/user_webhooks")}>
+  <.live_component
+    module={BlokupiWeb.UserWebhookLive.FormComponent}
+    id={@user_webhook.id || :new}
+    title={@page_title}
+    action={@live_action}
+    user_webhook={@user_webhook}
+    patch={~p"/user_webhooks"}
+  />
+</.modal>

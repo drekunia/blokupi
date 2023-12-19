@@ -101,4 +101,100 @@ defmodule Blokupi.Features do
   def change_user_stream_key(%UserStreamKey{} = user_stream_key, attrs \\ %{}) do
     UserStreamKey.changeset(user_stream_key, attrs)
   end
+
+  alias Blokupi.Features.UserWebhook
+
+  @doc """
+  Returns the list of user_webhooks.
+
+  ## Examples
+
+      iex> list_user_webhooks()
+      [%UserWebhook{}, ...]
+
+  """
+  def list_user_webhooks do
+    Repo.all(UserWebhook)
+  end
+
+  @doc """
+  Gets a single user_webhook.
+
+  Raises `Ecto.NoResultsError` if the User webhook does not exist.
+
+  ## Examples
+
+      iex> get_user_webhook!(123)
+      %UserWebhook{}
+
+      iex> get_user_webhook!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_webhook!(id), do: Repo.get!(UserWebhook, id)
+
+  @doc """
+  Creates a user_webhook.
+
+  ## Examples
+
+      iex> create_user_webhook(%{field: value})
+      {:ok, %UserWebhook{}}
+
+      iex> create_user_webhook(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_user_webhook(attrs \\ %{}) do
+    %UserWebhook{}
+    |> UserWebhook.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a user_webhook.
+
+  ## Examples
+
+      iex> update_user_webhook(user_webhook, %{field: new_value})
+      {:ok, %UserWebhook{}}
+
+      iex> update_user_webhook(user_webhook, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_webhook(%UserWebhook{} = user_webhook, attrs) do
+    user_webhook
+    |> UserWebhook.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a user_webhook.
+
+  ## Examples
+
+      iex> delete_user_webhook(user_webhook)
+      {:ok, %UserWebhook{}}
+
+      iex> delete_user_webhook(user_webhook)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_user_webhook(%UserWebhook{} = user_webhook) do
+    Repo.delete(user_webhook)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking user_webhook changes.
+
+  ## Examples
+
+      iex> change_user_webhook(user_webhook)
+      %Ecto.Changeset{data: %UserWebhook{}}
+
+  """
+  def change_user_webhook(%UserWebhook{} = user_webhook, attrs \\ %{}) do
+    UserWebhook.changeset(user_webhook, attrs)
+  end
 end

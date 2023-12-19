@@ -1,0 +1,30 @@
+<.header>
+  User webhook <%= @user_webhook.id %>
+  <:subtitle>This is a user_webhook record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/user_webhooks/#{@user_webhook}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit user_webhook</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Platform"><%= @user_webhook.platform %></:item>
+  <:item title="Is active"><%= @user_webhook.is_active %></:item>
+  <:item title="Url"><%= @user_webhook.url %></:item>
+  <:item title="Message"><%= @user_webhook.message %></:item>
+  <:item title="Fail count"><%= @user_webhook.fail_count %></:item>
+</.list>
+
+<.back navigate={~p"/user_webhooks"}>Back to user_webhooks</.back>
+
+<.modal :if={@live_action == :edit} id="user_webhook-modal" show on_cancel={JS.patch(~p"/user_webhooks/#{@user_webhook}")}>
+  <.live_component
+    module={BlokupiWeb.UserWebhookLive.FormComponent}
+    id={@user_webhook.id}
+    title={@page_title}
+    action={@live_action}
+    user_webhook={@user_webhook}
+    patch={~p"/user_webhooks/#{@user_webhook}"}
+  />
+</.modal>

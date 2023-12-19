@@ -19,4 +19,22 @@ defmodule Blokupi.FeaturesFixtures do
 
     user_stream_key
   end
+
+  @doc """
+  Generate a user_webhook.
+  """
+  def user_webhook_fixture(attrs \\ %{}) do
+    {:ok, user_webhook} =
+      attrs
+      |> Enum.into(%{
+        fail_count: 42,
+        is_active: true,
+        message: "some message",
+        platform: "some platform",
+        url: "some url"
+      })
+      |> Blokupi.Features.create_user_webhook()
+
+    user_webhook
+  end
 end

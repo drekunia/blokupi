@@ -1,4 +1,5 @@
 defmodule Blokupi.Accounts.User do
+  alias Blokupi.Features.UserWebhook
   alias Blokupi.Features.UserStreamKey
   alias Blokupi.Accounts.UserProfile
   use Ecto.Schema
@@ -20,6 +21,7 @@ defmodule Blokupi.Accounts.User do
 
     has_one(:user_profile, UserProfile)
     has_many(:user_stream_key, UserStreamKey)
+    has_many(:user_webhook, UserWebhook)
   end
 
   @doc """
