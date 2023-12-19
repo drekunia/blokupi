@@ -1,0 +1,43 @@
+<.header>
+  Listing User stream keys
+  <:actions>
+    <.link patch={~p"/user_stream_keys/new"}>
+      <.button>New User stream key</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="user_stream_keys"
+  rows={@streams.user_stream_keys}
+  row_click={fn {_id, user_stream_key} -> JS.navigate(~p"/user_stream_keys/#{user_stream_key}") end}
+>
+  <:col :let={{_id, user_stream_key}} label="Key name"><%= user_stream_key.key_name %></:col>
+  <:col :let={{_id, user_stream_key}} label="Stream key"><%= user_stream_key.stream_key %></:col>
+  <:col :let={{_id, user_stream_key}} label="Is active"><%= user_stream_key.is_active %></:col>
+  <:action :let={{_id, user_stream_key}}>
+    <div class="sr-only">
+      <.link navigate={~p"/user_stream_keys/#{user_stream_key}"}>Show</.link>
+    </div>
+    <.link patch={~p"/user_stream_keys/#{user_stream_key}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, user_stream_key}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: user_stream_key.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="user_stream_key-modal" show on_cancel={JS.patch(~p"/user_stream_keys")}>
+  <.live_component
+    module={BlokupiWeb.UserStreamKeyLive.FormComponent}
+    id={@user_stream_key.id || :new}
+    title={@page_title}
+    action={@live_action}
+    user_stream_key={@user_stream_key}
+    patch={~p"/user_stream_keys"}
+  />
+</.modal>

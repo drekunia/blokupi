@@ -1,4 +1,6 @@
 defmodule Blokupi.Accounts.User do
+  alias Blokupi.Features.UserStreamKey
+  alias Blokupi.Accounts.UserProfile
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -15,6 +17,9 @@ defmodule Blokupi.Accounts.User do
     field :confirmed_at, :naive_datetime
 
     timestamps(type: :utc_datetime)
+
+    has_one(:user_profile, UserProfile)
+    has_many(:user_stream_key, UserStreamKey)
   end
 
   @doc """
