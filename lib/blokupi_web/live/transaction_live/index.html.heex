@@ -1,0 +1,51 @@
+<.header>
+  Listing Transactions
+  <:actions>
+    <.link patch={~p"/transactions/new"}>
+      <.button>New Transaction</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="transactions"
+  rows={@streams.transactions}
+  row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}") end}
+>
+  <:col :let={{_id, transaction}} label="Amount"><%= transaction.amount %></:col>
+  <:col :let={{_id, transaction}} label="Currency"><%= transaction.currency %></:col>
+  <:col :let={{_id, transaction}} label="Recipient user"><%= transaction.recipient_user_id %></:col>
+  <:col :let={{_id, transaction}} label="Sender user"><%= transaction.sender_user_id %></:col>
+  <:col :let={{_id, transaction}} label="Sender name"><%= transaction.sender_name %></:col>
+  <:col :let={{_id, transaction}} label="Sender email"><%= transaction.sender_email %></:col>
+  <:col :let={{_id, transaction}} label="Message"><%= transaction.message %></:col>
+  <:col :let={{_id, transaction}} label="Content"><%= transaction.content %></:col>
+  <:col :let={{_id, transaction}} label="Payment method"><%= transaction.payment_method %></:col>
+  <:col :let={{_id, transaction}} label="Request details"><%= transaction.request_details %></:col>
+  <:col :let={{_id, transaction}} label="Response details"><%= transaction.response_details %></:col>
+  <:action :let={{_id, transaction}}>
+    <div class="sr-only">
+      <.link navigate={~p"/transactions/#{transaction}"}>Show</.link>
+    </div>
+    <.link patch={~p"/transactions/#{transaction}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, transaction}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: transaction.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="transaction-modal" show on_cancel={JS.patch(~p"/transactions")}>
+  <.live_component
+    module={BlokupiWeb.TransactionLive.FormComponent}
+    id={@transaction.id || :new}
+    title={@page_title}
+    action={@live_action}
+    transaction={@transaction}
+    patch={~p"/transactions"}
+  />
+</.modal>

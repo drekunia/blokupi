@@ -1,0 +1,36 @@
+<.header>
+  Transaction <%= @transaction.id %>
+  <:subtitle>This is a transaction record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/transactions/#{@transaction}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit transaction</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Amount"><%= @transaction.amount %></:item>
+  <:item title="Currency"><%= @transaction.currency %></:item>
+  <:item title="Recipient user"><%= @transaction.recipient_user_id %></:item>
+  <:item title="Sender user"><%= @transaction.sender_user_id %></:item>
+  <:item title="Sender name"><%= @transaction.sender_name %></:item>
+  <:item title="Sender email"><%= @transaction.sender_email %></:item>
+  <:item title="Message"><%= @transaction.message %></:item>
+  <:item title="Content"><%= @transaction.content %></:item>
+  <:item title="Payment method"><%= @transaction.payment_method %></:item>
+  <:item title="Request details"><%= @transaction.request_details %></:item>
+  <:item title="Response details"><%= @transaction.response_details %></:item>
+</.list>
+
+<.back navigate={~p"/transactions"}>Back to transactions</.back>
+
+<.modal :if={@live_action == :edit} id="transaction-modal" show on_cancel={JS.patch(~p"/transactions/#{@transaction}")}>
+  <.live_component
+    module={BlokupiWeb.TransactionLive.FormComponent}
+    id={@transaction.id}
+    title={@page_title}
+    action={@live_action}
+    transaction={@transaction}
+    patch={~p"/transactions/#{@transaction}"}
+  />
+</.modal>

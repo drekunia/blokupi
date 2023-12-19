@@ -21,4 +21,28 @@ defmodule Blokupi.MonetaryFixtures do
 
     user_balance
   end
+
+  @doc """
+  Generate a transaction.
+  """
+  def transaction_fixture(attrs \\ %{}) do
+    {:ok, transaction} =
+      attrs
+      |> Enum.into(%{
+        amount: 42,
+        content: "some content",
+        currency: "some currency",
+        message: "some message",
+        payment_method: "some payment_method",
+        recipient_user_id: 42,
+        request_details: "some request_details",
+        response_details: "some response_details",
+        sender_email: "some sender_email",
+        sender_name: "some sender_name",
+        sender_user_id: 42
+      })
+      |> Blokupi.Monetary.create_transaction()
+
+    transaction
+  end
 end
